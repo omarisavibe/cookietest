@@ -3,121 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍪 Omar's Insanely Good Cookie Guide! 🍪</title>
+    <!-- The title will be set dynamically by JS -->
+    <title>Omar's Cookie Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
+    <!-- Link your CSS file -->
     <link rel="stylesheet" href="style.css">
+    <!-- Add CSS classes for showing/hiding sections if not already present -->
+    <style>
+        .visually-hidden { /* Ensure you have this utility class */
+             border: 0 !important; clip: rect(1px, 1px, 1px, 1px) !important; clip-path: inset(50%) !important; height: 1px !important; margin: -1px !important; overflow: hidden !important; padding: 0 !important; position: absolute !important; width: 1px !important; white-space: nowrap !important; opacity: 0 !important;
+         }
+        /* Define base transition for sections that toggle visibility */
+        #key-differences, #recipe-scaler, #recipe-details, #easter-egg-container, .content-placeholder {
+            transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+            max-height: 0; /* Start collapsed */
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0; /* Hide borders when collapsed */
+        }
+        #key-differences.visible, #recipe-scaler.visible, #recipe-details.visible, #easter-egg-container.visible, .content-placeholder.visible {
+             max-height: 5000px; /* Allow ample height */
+             opacity: 1;
+             /* Restore margins/padding/borders defined in your main CSS */
+             /* Example: Add margin-bottom back */
+             margin-bottom: 35px;
+             /* Example: Add padding back (use values from your CSS) */
+             padding: 30px;
+             /* Example: Restore border if needed */
+             border-width: 1px; /* Adjust as needed */
+        }
+        /* Adjust padding/margin specifically if needed when visible */
+        #key-differences.visible { padding: 30px; margin-bottom: 35px; /* from style.css */}
+        #recipe-scaler.visible { padding: 25px 30px; margin: 30px auto 35px auto; /* from style.css */}
+        #recipe-details.visible { padding: 0; margin-top: 0px; /* from style.css */}
+        #easter-egg-container.visible { padding: 30px; margin-top: 35px; /* from style.css */}
+        .content-placeholder.visible { padding: 80px 20px; margin-bottom: 35px; /* Adjust placeholder padding */ }
+
+        /* Styling for added toast instructions */
+        .how-to-toast {
+            background-color: var(--highlight-bg);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 25px 0;
+            font-size: 0.95em;
+        }
+        .how-to-toast h4 {
+            font-size: 1.1em;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            border: none;
+            padding: 0;
+        }
+         .how-to-toast p {
+            font-size: 1em;
+            color: var(--text-color);
+            line-height: 1.6;
+         }
+    </style>
 </head>
 <body dir="ltr">
 
     <div class="container">
-        <header class="main-header fade-in-on-scroll">
-            <h1 id="main-title-h1" data-lang-key="mainTitle"><span class="emoji">🍪</span> Omar's Insanely Good Cookie Guide! <span class="emoji">🍪</span></h1>
 
+        <!-- MOVED LANGUAGE TOGGLE HERE -->
+        <div class="language-selector fade-in-on-scroll" style="text-align: center; margin-bottom: 20px;">
+            <button class="lang-btn active" data-lang="en">🌍 English</button>
+            <button class="lang-btn" data-lang="ar">🌍 العربية</button>
+        </div>
+
+        <header class="main-header fade-in-on-scroll">
+            <h1 id="main-title-h1" data-lang-key="mainTitle"></h1>
             <div class="controls-master">
-                <div class="language-selector">
-                    <button class="lang-btn active" data-lang="en">🌍 English</button>
-                    <button class="lang-btn" data-lang="ar">🌍 العربية (مصر)</button>
-                </div>
-                <div id="unit-toggles-template" style="display: none;">
+                <!-- Unit toggles template remains hidden -->
+                 <div id="unit-toggles-template" style="display: none;">
                      <div class="unit-selector" data-lang="en">
                           <span class="unit-label" data-lang-key="unitLabelEn">Units:</span>
-                          <button class="unit-btn" data-unit-type="imperial">Imperial (Cups)</button>
-                          <button class="unit-btn" data-unit-type="metric">Metric (Grams)</button>
+                          <button class="unit-btn" data-unit-type="imperial" data-lang-key="unitImperial">Imperial</button>
+                          <button class="unit-btn" data-unit-type="metric" data-lang-key="unitMetric">Metric</button>
                      </div>
                       <div class="unit-selector" data-lang="ar">
                           <span class="unit-label" data-lang-key="unitLabelAr">الوحدات:</span>
-                          <button class="unit-btn" data-unit-type="cups">أكواب</button>
-                          <button class="unit-btn" data-unit-type="grams">جرامات</button>
+                          <button class="unit-btn" data-unit-type="cups" data-lang-key="unitCups">أكواب</button>
+                          <button class="unit-btn" data-unit-type="grams" data-lang-key="unitGrams">جرامات</button>
                       </div>
                  </div>
-                 {/* MODIFIED: Removed data-lang-key here, will be handled by JS */}
-                 <p class="yield-info" id="yield-info-display">Whips up about 18-24 cookies 🍪</p>
+                 <!-- Yield Info Display -->
+                 <p class="yield-info" id="yield-info-display" data-lang-key="yieldInfoBase"></p>
              </div>
         </header>
 
-         {/* Header Image Area */}
+         <!-- Header Image Area -->
          <div id="cookie-image-header" class="fade-in-on-scroll">
              <img id="selected-cookie-image" src="" alt="Cookie comparison or selected cookie type">
          </div>
 
-         {/* Recipe Scaler Section */}
-         <section class="recipe-scaler fade-in-on-scroll">
-             <h3 data-lang-key="scalerTitle">🧈 Customize Your Batch Size!</h3>
-             <p data-lang-key="scalerDesc">Enter your starting butter amount (grams) to scale the metric recipe.</p>
-             <div class="scaler-input-group">
-                 <label for="butter-amount-input" data-lang-key="scalerLabel">Starting Butter (g):</label>
-                 <input type="number" id="butter-amount-input" name="butter-amount" min="50" step="1" placeholder="226" value="226">
-                 <button id="update-scale-btn" data-lang-key="scalerButton">Update Scale</button>
-             </div>
-             <span class="scaler-note" data-lang-key="scalerNote">Note: Only metric (gram) values are scaled. Imperial (cup) units are approximate.</span>
-         </section>
-
-        {/* Cookie Selection Buttons */}
+        <!-- Cookie Selection Buttons -->
         <div class="cookie-type-selector fade-in-on-scroll">
-            <h2 data-lang-key="chooseStyle">Alright, Cookie Boss! Pick Your Poison (aka Style!):</h2>
+            <h2 data-lang-key="chooseStyle"></h2>
              <div class="button-group-container">
                  <div class="button-group">
-                     <button class="selector-btn" data-type="classic">
-                         <span class="emoji">⚖️</span> <span data-lang-key="typeClassic">Classic: The Crowd-Pleaser</span>
+                     <!-- Buttons will have text set by JS -->
+                     <button class="selector-btn" data-type="classic" aria-pressed="false">
+                         <span class="emoji">⚖️</span> <span data-lang-key="typeClassicShort"></span>
                      </button>
-                     <button class="selector-btn" data-type="thick">
-                         <span class="emoji">🧱</span> <span data-lang-key="typeThick">Thick & Gooey: The Big Softie</span>
+                     <button class="selector-btn" data-type="thick" aria-pressed="false">
+                         <span class="emoji">🧱</span> <span data-lang-key="typeThickShort"></span>
                      </button>
-                     <button class="selector-btn" data-type="thin">
-                         <span class="emoji">🧇</span> <span data-lang-key="typeThin">Thin & Crispy: The Snapper</span>
+                     <button class="selector-btn" data-type="thin" aria-pressed="false">
+                         <span class="emoji">🧇</span> <span data-lang-key="typeThinShort"></span>
                      </button>
                   </div>
-                  <span class="omars-fav-text visually-hidden" data-lang-key="omarsFavText">Omar's Fave!</span>
+                  <span class="omars-fav-text visually-hidden" data-lang-key="omarsFavText"></span>
              </div>
         </div>
 
-        {/* Key Differences Area */}
-        {/* NOTE: We won't add fade-in directly here as its visibility is controlled by JS anyway */}
+         <!-- MOVED Recipe Scaler Section HERE -->
+         <section id="recipe-scaler" class="recipe-scaler visually-hidden">
+             <h3 data-lang-key="scalerTitle"></h3>
+             <p data-lang-key="scalerDesc"></p>
+             <div class="scaler-input-group">
+                 <label for="butter-amount-input" data-lang-key="scalerLabel"></label>
+                 <input type="number" id="butter-amount-input" name="butter-amount" min="50" step="1" placeholder="226" value="226">
+                 <button id="update-scale-btn" data-lang-key="scalerButton"></button>
+             </div>
+             <span class="scaler-note" data-lang-key="scalerNote"></span>
+         </section>
+
+         <!-- Initial Placeholder -->
+         <div class="content-placeholder visually-hidden">
+             <p data-lang-key="placeholderSelect"></p>
+         </div>
+
+        <!-- Key Differences Area (Initially Hidden) -->
         <div id="key-differences" class="key-differences-container visually-hidden">
-             <h3 data-lang-key="keyDifferencesTitleBase">🔑 Key Differences for <span class="dynamic-cookie-name">Cookie</span></h3>
+             <h3><span data-lang-key="keyDifferencesTitleBase"></span><span class="dynamic-cookie-name"></span></h3>
              <div class="diff-points">
-                 <div class="diff-point butter-diff"><h4><span class="emoji">🧈</span> <span data-lang-key="butterTitle">Brown Butter State & Mixing</span></h4><p></p></div>
-                 <div class="diff-point chilling-diff"><h4><span class="emoji">🥶</span> <span data-lang-key="chillingTitle">Chilling Method</span></h4><p></p></div>
-                 <div class="diff-point other-diff"><h4><span class="emoji">📝</span> <span data-lang-key="otherNotesTitle">Other Key Notes</span></h4><p></p></div>
+                 <!-- Points added dynamically by JS -->
              </div>
         </div>
 
-        {/* Recipe Details Area */}
-        {/* NOTE: We won't add fade-in directly here as its content changes */}
-        <div id="recipe-details" class="recipe-container">
-             <div class="placeholder" data-lang-key="placeholderSelect">👈 Click a cookie style above! ✨</div>
+        <!-- Recipe Details Area (Initially Hidden) -->
+        <div id="recipe-details" class="recipe-container visually-hidden">
+             <!-- Content added dynamically by JS -->
         </div>
 
-        {/* Easter Egg Area */}
-         {/* NOTE: We won't add fade-in directly here as its visibility is controlled by JS anyway */}
+        <!-- Easter Egg Area (Initially Hidden) -->
         <div id="easter-egg-container" class="easter-egg visually-hidden">
-             <h3 data-lang-key="easterEggTitle">🏆 You Legend! Picked GOOEY! 🏆</h3>
-             <div class="easter-egg-content">
-                 <p data-lang-key="easterEggIntro">Okay, you've got taste! Ready for the Level 2 Boss?</p>
-                 <strong data-lang-key="easterEggIdea">🔥 STUFFED COOKIES! 🔥</strong>
-                 <p data-lang-key="easterEggDesc">Dead easy: Make a dent in your THICK cookie dough ball, plop in ~1 tsp Nutella/Lotus/Pistachio cream, seal it up like a secret treasure, then bake as usual!</p>
-                 <img id="stuffed-cookie-image" src="" alt="Delicious stuffed cookie example">
-                  <p data-lang-key="easterEggPistachioTip">Seriously, TRUST the pistachio! It's a game-changer.</p>
-                  <ul><li><span data-lang-key="pistachioReco">Best Spread IMHO:</span> <a href="https://www.amazon.eg/-/en/Pistachio-spread-Irresistible-Luxurious-Goodness/dp/B0D9C3BDV2/" target="_blank">ASMACUP Pistachio Cream</a> <span data-lang-key="pistachioLinkSource">(Amazon EG link)</span></li></ul>
-             </div>
+             <!-- Content added dynamically by JS -->
         </div>
 
-        {/* Tips Section */}
+        <!-- Tips Section -->
         <div class="lower-sections fade-in-on-scroll">
             <div class="tip-box">
-                <h3 data-lang-key="tipsTitle"><span class="emoji">💡</span> Omar's Pro Tips! (Level Up Your Cookie Game) <span class="emoji">🔬</span></h3>
-                <ul id="tips-list"></ul>
+                <h3 data-lang-key="tipsTitle"></h3>
+                <ul id="tips-list">
+                     <!-- Tips added dynamically by JS -->
+                </ul>
             </div>
         </div>
 
-        {/* Final Shoutout */}
+        <!-- Final Shoutout -->
         <div class="final-shoutout fade-in-on-scroll">
-            <p data-lang-key="finalTag">Nailed it? Wanna show off? Tag me! <a href="https://www.instagram.com/omarisavibe/" target="_blank">@omarisavibe</a> 😄</p>
+            <p data-lang-key="finalTag"></p>
         </div>
     </div>
 
+    <!-- Link the updated script.js -->
     <script src="script.js"></script>
 </body>
 </html>
