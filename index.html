@@ -3,108 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍪 Omar's Cookie Lab! 🍪</title> <!-- Updated Title -->
+    <title>🍪 Omar's Insanely Good Cookie Guide! 🍪</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- Link the NEW CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body dir="ltr">
 
-    <div class="master-container">
+    <div class="container">
+        <header class="main-header fade-in-on-scroll"> {/* Added fade class */}
+            <h1 id="main-title-h1" data-lang-key="mainTitle"><span class="emoji">🍪</span> Omar's Insanely Good Cookie Guide! <span class="emoji">🍪</span></h1>
 
-        <!-- Sticky Header for Controls -->
-        <header class="page-header sticky">
             <div class="controls-master">
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="en">🌍 English</button>
                     <button class="lang-btn" data-lang="ar">🌍 العربية (مصر)</button>
                 </div>
-                <!-- Yield Info - Dynamically Updated -->
-                <p class="yield-info" data-lang-key="yieldInfo">Whips up about 18-24 cookies 🍪</p>
-                 <!-- Unit Toggles TEMPLATE - Will be Cloned and Injected -->
                 <div id="unit-toggles-template" style="display: none;">
                      <div class="unit-selector" data-lang="en">
                           <span class="unit-label" data-lang-key="unitLabelEn">Units:</span>
-                          <button class="unit-btn" data-unit-type="imperial">Imperial</button>
-                          <button class="unit-btn" data-unit-type="metric">Metric</button>
+                          <button class="unit-btn" data-unit-type="imperial">Imperial (Cups)</button>
+                          <button class="unit-btn" data-unit-type="metric">Metric (Grams)</button>
                      </div>
-                     <div class="unit-selector" data-lang="ar">
+                      <div class="unit-selector" data-lang="ar">
                           <span class="unit-label" data-lang-key="unitLabelAr">الوحدات:</span>
                           <button class="unit-btn" data-unit-type="cups">أكواب</button>
                           <button class="unit-btn" data-unit-type="grams">جرامات</button>
                       </div>
                  </div>
-            </div>
+                 {/* MODIFIED: Removed data-lang-key here, will be handled by JS */}
+                 <p class="yield-info" id="yield-info-display">Whips up about 18-24 cookies 🍪</p>
+             </div>
         </header>
 
-        <main class="content-area">
-            <!-- === HERO SECTION === -->
-            <section class="hero-section">
-                <img id="hero-cookie-image" src="3-cookie-types.jpg" alt="Delicious Cookie Varieties">
-                <div class="hero-text">
-                    <h1 id="main-title-h1" data-lang-key="mainTitle"><span class="emoji">🍪</span> Omar's Insanely Good Cookie Guide! <span class="emoji">🍪</span></h1>
-                    <p class="hero-subtitle" data-lang-key="heroSubtitle">Select your ultimate cookie style below!</p>
-                 </div>
-            </section>
+         {/* Header Image Area */}
+         <div id="cookie-image-header" class="fade-in-on-scroll"> {/* Added fade class */}
+             <img id="selected-cookie-image" src="" alt="Cookie comparison or selected cookie type">
+         </div>
 
-            <!-- === SELECTION HUB === -->
-            <section class="cookie-selector-hub">
-                 <h2 class="hub-title" data-lang-key="chooseStyle">Pick Your Cookie Destiny:</h2>
-                <div class="cookie-card" data-type="classic" tabindex="0"> <!-- Added tabindex -->
-                    <img src="classic_thumb.webp" alt="Classic Cookie Thumbnail">
-                    <h3 data-lang-key="typeClassicShort">Classic</h3> <!-- Shorter Titles? -->
-                    <p class="card-description" data-lang-key="typeClassicDesc">The balanced crowd-pleaser.</p>
-                    <span class="card-cta"><span class="emoji">⚖️</span> Explore Recipe</span>
-                </div>
-                <div class="cookie-card" data-type="thick" tabindex="0"> <!-- Added tabindex -->
-                    <img src="thick_thumb.webp" alt="Thick & Gooey Cookie Thumbnail">
-                    <span class="omars-fav-badge visually-hidden" data-lang-key="omarsFavText">Omar's Fave!</span>
-                    <h3 data-lang-key="typeThickShort">Thick & Gooey</h3>
-                     <p class="card-description" data-lang-key="typeThickDesc">The big softie, ultra decadent.</p>
-                    <span class="card-cta"><span class="emoji">🧱</span> Explore Recipe</span>
-                </div>
-                <div class="cookie-card" data-type="thin" tabindex="0"> <!-- Added tabindex -->
-                    <img src="thin_thumb.webp" alt="Thin & Crispy Cookie Thumbnail">
-                    <h3 data-lang-key="typeThinShort">Thin & Crispy</h3>
-                     <p class="card-description" data-lang-key="typeThinDesc">Maximum snap, buttery delight.</p>
-                    <span class="card-cta"><span class="emoji">🧇</span> Explore Recipe</span>
-                </div>
-            </section>
+         {/* Recipe Scaler Section */}
+         <section class="recipe-scaler fade-in-on-scroll"> {/* Added fade class */}
+             <h3 data-lang-key="scalerTitle">🧈 Customize Your Batch Size!</h3>
+             <p data-lang-key="scalerDesc">Enter your starting butter amount (grams) to scale the metric recipe.</p>
+             <div class="scaler-input-group">
+                 <label for="butter-amount-input" data-lang-key="scalerLabel">Starting Butter (g):</label>
+                 <input type="number" id="butter-amount-input" name="butter-amount" min="50" step="1" placeholder="226" value="226">
+                 <button id="update-scale-btn" data-lang-key="scalerButton">Update Scale</button>
+             </div>
+             <span class="scaler-note" data-lang-key="scalerNote">Note: Only metric (gram) values are scaled. Imperial (cup) units are approximate.</span>
+         </section>
 
-            <!-- === DYNAMIC CONTENT AREA === -->
-            <div class="dynamic-content-wrapper">
-                <!-- Initial Placeholder -->
-                <div class="content-placeholder active" data-lang-key="placeholderSelect">
-                     👆 Select a cookie style above to load the recipe! ✨
-                </div>
-
-                <!-- Container Sections (Populated by JS) -->
-                <section id="key-differences" class="details-section key-differences-container visually-hidden"></section>
-                <section id="recipe-scaler" class="details-section recipe-scaler visually-hidden"></section>
-                <section id="recipe-details" class="details-section recipe-container visually-hidden"></section>
-                <section id="easter-egg-container" class="details-section easter-egg visually-hidden"></section>
-            </div>
-
-             <!-- === TIPS SECTION (Static or Dynamic?) === -->
-             <!-- Let's keep it static for simplicity unless requested otherwise -->
-             <section class="lower-sections tip-section">
-                  <div class="tip-box">
-                      <h3 data-lang-key="tipsTitle"><span class="emoji">💡</span> Omar's Pro Tips! <span class="emoji">🔬</span></h3>
-                      <ul id="tips-list">
-                          <!-- Tips will be populated by JS based on langData -->
-                      </ul>
+        {/* Cookie Selection Buttons */}
+        <div class="cookie-type-selector fade-in-on-scroll"> {/* Added fade class */}
+            <h2 data-lang-key="chooseStyle">Alright, Cookie Boss! Pick Your Poison (aka Style!):</h2>
+             <div class="button-group-container">
+                 <div class="button-group">
+                     <button class="selector-btn" data-type="classic">
+                         <span class="emoji">⚖️</span> <span data-lang-key="typeClassic">Classic: The Crowd-Pleaser</span>
+                     </button>
+                     <button class="selector-btn" data-type="thick">
+                         <span class="emoji">🧱</span> <span data-lang-key="typeThick">Thick & Gooey: The Big Softie</span>
+                     </button>
+                     <button class="selector-btn" data-type="thin">
+                         <span class="emoji">🧇</span> <span data-lang-key="typeThin">Thin & Crispy: The Snapper</span>
+                     </button>
                   </div>
-             </section>
+                  <span class="omars-fav-text visually-hidden" data-lang-key="omarsFavText">Omar's Fave!</span>
+             </div>
+        </div>
 
-             <!-- === FINAL SHOUTOUT === -->
-             <footer class="final-shoutout">
-                 <p data-lang-key="finalTag">Nailed it? Show off! Tag me! <a href="https://www.instagram.com/omarisavibe/" target="_blank">@omarisavibe</a> 😄</p>
-             </footer>
+        {/* Key Differences Area */}
+        {/* NOTE: We won't add fade-in directly here as its visibility is controlled by JS anyway */}
+        <div id="key-differences" class="key-differences-container visually-hidden">
+             <h3 data-lang-key="keyDifferencesTitleBase">🔑 Key Differences for <span class="dynamic-cookie-name">Cookie</span></h3>
+             <div class="diff-points">
+                 <div class="diff-point butter-diff"><h4><span class="emoji">🧈</span> <span data-lang-key="butterTitle">Brown Butter State & Mixing</span></h4><p></p></div>
+                 <div class="diff-point chilling-diff"><h4><span class="emoji">🥶</span> <span data-lang-key="chillingTitle">Chilling Method</span></h4><p></p></div>
+                 <div class="diff-point other-diff"><h4><span class="emoji">📝</span> <span data-lang-key="otherNotesTitle">Other Key Notes</span></h4><p></p></div>
+             </div>
+        </div>
 
-        </main> <!-- End content-area -->
-    </div> <!-- End master-container -->
+        {/* Recipe Details Area */}
+        {/* NOTE: We won't add fade-in directly here as its content changes */}
+        <div id="recipe-details" class="recipe-container">
+             <div class="placeholder" data-lang-key="placeholderSelect">👈 Click a cookie style above! ✨</div>
+        </div>
 
-    <script src="script.js"></script> <!-- Link the NEW JS -->
+        {/* Easter Egg Area */}
+         {/* NOTE: We won't add fade-in directly here as its visibility is controlled by JS anyway */}
+        <div id="easter-egg-container" class="easter-egg visually-hidden">
+             <h3 data-lang-key="easterEggTitle">🏆 You Legend! Picked GOOEY! 🏆</h3>
+             <div class="easter-egg-content">
+                 <p data-lang-key="easterEggIntro">Okay, you've got taste! Ready for the Level 2 Boss?</p>
+                 <strong data-lang-key="easterEggIdea">🔥 STUFFED COOKIES! 🔥</strong>
+                 <p data-lang-key="easterEggDesc">Dead easy: Make a dent in your THICK cookie dough ball, plop in ~1 tsp Nutella/Lotus/Pistachio cream, seal it up like a secret treasure, then bake as usual!</p>
+                 <img id="stuffed-cookie-image" src="" alt="Delicious stuffed cookie example">
+                  <p data-lang-key="easterEggPistachioTip">Seriously, TRUST the pistachio! It's a game-changer.</p>
+                  <ul><li><span data-lang-key="pistachioReco">Best Spread IMHO:</span> <a href="https://www.amazon.eg/-/en/Pistachio-spread-Irresistible-Luxurious-Goodness/dp/B0D9C3BDV2/" target="_blank">ASMACUP Pistachio Cream</a> <span data-lang-key="pistachioLinkSource">(Amazon EG link)</span></li></ul>
+             </div>
+        </div>
+
+        {/* Tips Section */}
+        <div class="lower-sections fade-in-on-scroll"> {/* Added fade class */}
+            <div class="tip-box">
+                <h3 data-lang-key="tipsTitle"><span class="emoji">💡</span> Omar's Pro Tips! (Level Up Your Cookie Game) <span class="emoji">🔬</span></h3>
+                <ul id="tips-list"></ul>
+            </div>
+        </div>
+
+        {/* Final Shoutout */}
+        <div class="final-shoutout fade-in-on-scroll"> {/* Added fade class */}
+            <p data-lang-key="finalTag">Nailed it? Wanna show off? Tag me! <a href="https://www.instagram.com/omarisavibe/" target="_blank">@omarisavibe</a> 😄</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
